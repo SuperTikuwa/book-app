@@ -11,6 +11,6 @@ services:
     image: supertikuwa/air:latest
     working_dir: /app
     volumes:
-      - ./backend:/app
+      - ../backend:/app
     ports:
       - "10080:8080"
