@@ -1,7 +1,7 @@
 compose_file := "./docker/docker-compose.yaml"
 project_name := "bookshelf"
 migrate = ""
-POSTGRESQL_URL := "postgres://postgres:postgres@localhost:54321/postgres?sslmode=disable"
+MARIADB_URL="mysql://golang:golang@tcp(localhost:33061)/bookshelf?parseTime=true"
 
 up:
 	docker-compose -f $(compose_file) -p $(project_name) up -d
@@ -16,7 +16,7 @@ migrate/create:
 	migrate create -ext sql -dir database/migrations -seq $(migrate)
 
 migrate/up:
-	migrate -database $(POSTGRESQL_URL) -path database/migrations up
+	migrate -database $(MARIADB_URL) -path database/migrations up
 
 migrate/down:
-	migrate -database $(POSTGRESQL_URL) -path database/migrations down
+	migrate -database $(MARIADB_URL) -path database/migrations down
