@@ -9,14 +9,15 @@ type User struct {
 	CognitoUUID string
 }
 
-func (u User) Create() error {
-	db := connect()
+func (u User) Create(db *gorm.DB) error {
 	d, _ := db.DB()
 	defer d.Close()
 
-	if db.Create(&u).Error != nil {
-		return db.Create(&u).Error
+	// db.Begin()
+	if err := db.Create(&u).Error; err != nil {
+		return err
 	}
+	// db.Commit()
 
 	return nil
 }
