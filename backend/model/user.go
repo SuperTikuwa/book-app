@@ -1,23 +1,22 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"context"
+)
 
 type User struct {
-	gorm.Model
 	Name        string
 	Email       string
 	CognitoUUID string
 }
 
-func (u User) Create(db *gorm.DB) error {
-	d, _ := db.DB()
-	defer d.Close()
+func (u *User) Create() error {
+	db := Connect()
+	defer db.Close()
 
-	// db.Begin()
-	if err := db.Create(&u).Error; err != nil {
+	if _, err := db.NewInsert().Model(u).Exec(context.Background()); err != nil {
 		return err
 	}
-	// db.Commit()
 
 	return nil
 }

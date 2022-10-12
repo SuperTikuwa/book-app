@@ -5,6 +5,7 @@ import (
 
 	"github.com/SuperTikuwa/book_app/handler"
 	"github.com/SuperTikuwa/book_app/model"
+	"github.com/brianvoe/gofakeit/v6"
 	"github.com/gorilla/mux"
 )
 
@@ -26,11 +27,17 @@ func main() {
 
 func test(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	db := model.Connect()
-	err := model.User{Name: "test", Email: "test@example.com", CognitoUUID: "test"}.Create(db)
-	if err != nil {
+
+	u := model.User{
+		Name:        "test",
+		Email:       "test",
+		CognitoUUID: gofakeit.UUID(),
+	}
+	if err := u.Create(); err != nil {
 		w.Write([]byte(err.Error()))
 		return
+
 	}
+
 	w.Write([]byte("OK"))
 }
