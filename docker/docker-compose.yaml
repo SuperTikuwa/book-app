@@ -9,6 +9,16 @@ services:
     ports:
       - "33061:3306"
 
+  test_database:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bookshelf
+      MYSQL_USER: golang
+      MYSQL_PASSWORD: golang
+    ports:
+      - "33062:3306"
+
   golang:
     image: supertikuwa/air:latest
     working_dir: /app

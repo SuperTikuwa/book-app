@@ -2,6 +2,7 @@ compose_file := "./docker/docker-compose.yaml"
 project_name := "bookshelf"
 migrate = ""
 MARIADB_URL="mysql://golang:golang@tcp(localhost:33061)/bookshelf?parseTime=true"
+TEST_DB_URL="mysql://golang:golang@tcp(localhost:33062)/bookshelf?parseTime=true"
 
 up:
 	docker-compose -f $(compose_file) -p $(project_name) up -d
@@ -17,6 +18,10 @@ migrate/create:
 
 migrate/up:
 	migrate -database $(MARIADB_URL) -path database/migrations up
+	migrate -database $(TEST_DB_URL) -path database/migrations up
 
 migrate/down:
 	migrate -database $(MARIADB_URL) -path database/migrations down
+	migrate -database $(TEST_DB_URL) -path database/migrations down
+
+migrate/fresh: migrate/down migrate/up
